@@ -10,6 +10,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace API.Controllers
 {
+
     public class AccountController : BaseApiController
     {
         private readonly DataContext _context;
@@ -43,7 +44,7 @@ namespace API.Controllers
             };
         }
 
-        [HttpPost]
+        [HttpPost("Login")]
         public async Task<ActionResult<UserDto>> Login(LoginDto loginDto)
         {
             var user = await _context.users.SingleOrDefaultAsync(x => x.UserName.ToLower() == loginDto.Username.ToLower());
@@ -64,10 +65,9 @@ namespace API.Controllers
             };
         }
 
-        private async Task<bool> UserExists(string username)
-        {
-            return await _context.users.AnyAsync(x => x.UserName.ToLower() == username.ToLower());
-        }
+        [NonAction]
+        private async Task<bool> UserExists(string username) => await _context.users.AnyAsync(x => x.UserName.ToLower() == username.ToLower());
+
 
     }
 }
